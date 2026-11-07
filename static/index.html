@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mindcast · Predict student mental wellbeing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="logo" href="#top"><span class="dot"></span>Mindcast</a>
+  <nav><a href="#predict">Predictor</a><a href="#how">How it works</a><a href="#factors">What it weighs</a></nav>
+  <a class="btn small" href="#predict">Try it</a>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-copy">
+    <h1>See how screen time shapes a student's wellbeing.</h1>
+    <p>Mindcast turns daily habits, from scrolling and sleep to study and movement, into a mental health score, trained on real student survey data.</p>
+    <div class="cta-row">
+      <a class="btn" href="#predict">Get a prediction</a>
+      <a class="btn ghost" href="#how">See how it works</a>
+    </div>
+    <ul class="proof"><li><b>12</b> inputs</li><li><b>1 to 10</b> score scale</li><li><b>Instant</b> results</li></ul>
+  </div>
+  <div class="hero-viz" aria-hidden="true">
+    <div class="orb"><div class="ring"></div><div class="ring r2"></div>
+      <div class="orb-core"><span id="heroScore">7.4</span><small>wellbeing score</small></div>
+    </div>
+    <div class="chip c1">Sleep 7.5 h</div>
+    <div class="chip c2">Screen 3.2 h</div>
+    <div class="chip c3">Activity 1 h</div>
+  </div>
+</section>
+
+<section class="predict" id="predict">
+  <div class="sec-head">
+    <h2>Describe a typical day</h2>
+    <p>Fill in the student's details. Everything runs against your FastAPI model.</p>
+  </div>
+  <div class="predict-grid">
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>About the student</legend>
+        <label>Age<input type="number" name="age" min="10" max="100" value="20" required></label>
+        <label>Gender<select name="gender"><option>Female</option><option>Male</option></select></label>
+        <label>Country<select name="country" id="country"></select></label>
+        <label>Academic level<select name="academic_level"><option>Undergraduate</option><option>Graduate</option><option>High School</option></select></label>
+      </fieldset>
+      <fieldset>
+        <legend>Social media</legend>
+        <label>Most used platform<select name="most_used_platform" id="platform"></select></label>
+        <label>Purpose of use<select name="purpose_of_use"><option>Entertainment</option><option>Networking</option><option>Education</option><option>News</option></select></label>
+        <label class="range"><span>Daily usage <output data-for="avg_daily_usage_hours">4</output> h</span><input type="range" name="avg_daily_usage_hours" min="0" max="16" step="0.5" value="4"></label>
+        <label>Phone unlocks per day<input type="number" name="daily_unlocks" min="0" value="60" required></label>
+      </fieldset>
+      <fieldset>
+        <legend>Daily routine</legend>
+        <label class="range"><span>Study <output data-for="study_hours">3</output> h</span><input type="range" name="study_hours" min="0" max="16" step="0.5" value="3"></label>
+        <label class="range"><span>Physical activity <output data-for="physical_activity_hours">1</output> h</span><input type="range" name="physical_activity_hours" min="0" max="8" step="0.5" value="1"></label>
+        <label class="range"><span>Sleep <output data-for="sleep_hours_per_night">7</output> h</span><input type="range" name="sleep_hours_per_night" min="0" max="14" step="0.5" value="7"></label>
+        <label>Stress level<select name="stress_level"><option>Low</option><option selected>Medium</option><option>High</option><option>Very High</option></select></label>
+      </fieldset>
+      <button class="btn wide" type="submit" id="go">Predict wellbeing score</button>
+    </form>
+
+    <aside class="result" aria-live="polite">
+      <div class="gauge">
+        <svg viewBox="0 0 200 120"><path class="track" d="M20 100 A80 80 0 0 1 180 100"/><path id="arc" class="fill" d="M20 100 A80 80 0 0 1 180 100"/></svg>
+        <div class="gauge-num"><span id="score">--</span><small>out of 10</small></div>
+      </div>
+      <h3 id="verdict">Your result appears here</h3>
+      <p id="note">Set the sliders and press predict. A higher score means better predicted wellbeing.</p>
+      <ul id="tips"></ul>
+      <p class="src" id="src"></p>
+    </aside>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="sec-head"><h2>From habits to a score in three steps</h2></div>
+  <ol class="steps">
+    <li><span>1</span><h3>Enter the habits</h3><p>Usage hours, unlocks, sleep, study, activity and stress level.</p></li>
+    <li><span>2</span><h3>The model reads them</h3><p>A scikit-learn pipeline encodes the answers and groups rarer countries as Other.</p></li>
+    <li><span>3</span><h3>You get a score</h3><p>A single 1 to 10 number, with plain-language guidance on what moves it.</p></li>
+  </ol>
+</section>
+
+<section class="factors" id="factors">
+  <div class="sec-head"><h2>What the model weighs</h2><p>Inputs grouped by the part of life they describe.</p></div>
+  <div class="f-grid">
+    <article class="f f1"><h3>Screen habits</h3><p>Daily hours, unlocks, platform and purpose of use.</p></article>
+    <article class="f f2"><h3>Rest and movement</h3><p>Sleep per night and physical activity.</p></article>
+    <article class="f f3"><h3>Study and stress</h3><p>Study hours, academic level and self-reported stress.</p></article>
+    <article class="f f4"><h3>Background</h3><p>Age, gender and country.</p></article>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p><b>Mindcast</b> is an educational project, not medical advice. If you are struggling, please talk to a counsellor or doctor.</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
