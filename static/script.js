@@ -1,6 +1,6 @@
 // Change this if your FastAPI server runs elsewhere.
 // Opened as a file -> local API. Served by the server (local or Render) -> same address.
-const API_URL = location.protocol === "file:" ? "http://127.0.0.1:8000/predict" : "/predict";
+const API_URL = location.protocol === "file:" ? " https://metal-health-prediction.onrender.com" : "/predict";
 
 const countries = ["India","USA","Canada","Australia","UK","Germany","Mexico","Turkey","France","Other"];
 const platforms = ["Instagram","TikTok","YouTube","Facebook","WhatsApp","Snapchat","Twitter","LinkedIn","LINE","KakaoTalk","VKontakte","WeChat"];
